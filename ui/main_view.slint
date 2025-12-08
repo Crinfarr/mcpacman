@@ -1,0 +1,29 @@
+import {
+    HorizontalBox,
+    VerticalBox,
+    StandardListView,
+    ListView,
+} from "std-widgets.slint";
+import {
+    PackListItem,
+    PackListItemData,
+    PackListView,
+} from "nodes/pack_list.slint";
+
+export component MainView inherits Window {
+    title: "McPacMan";
+    in property <[PackListItemData]> modpacks: [];
+    HorizontalBox {
+        sidebar := PackListView {
+            width: 20%;
+            for data in modpacks: PackListItem {
+                icon: data.icon;
+                name: data.name;
+            }
+        }
+
+        packdata := Rectangle {
+            background: white;
+        }
+    }
+}

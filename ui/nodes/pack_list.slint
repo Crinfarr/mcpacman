@@ -1,0 +1,11 @@
+import { ListView } from "std-widgets.slint";
+export struct PackListItemData {
+    icon: image,
+    name: string,
+}
+export component PackListView inherits ListView { }
+
+export component PackListItem inherits Rectangle {
+    in property <image> icon;
+    in property <string> name;
+}

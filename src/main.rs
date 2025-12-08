@@ -1,33 +1,21 @@
+use std::rc::Rc;
+
 use color_eyre::eyre::Result;
-use ratatui::{Frame, crossterm, layout::Constraint};
+use slint::{Model, VecModel};
+
+slint::include_modules!();
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {
     color_eyre::install()?;
-    let mut term = ratatui::init();
-    run(&mut term)?;
+    let ui = MainView::new()?;
+    let mut packs: Vec<PackListItemData> = ui.get_modpacks().iter().collect();
+    packs.push((|| {
+        let mut itm = PackListItemData::default();
+        itm.name = "test item".into();
+        itm
+    })());
+    ui.set_modpacks(Rc::new(VecModel::from(packs)).into());
+    ui.run()?;
     Ok(())
-}
-fn run(term: &mut ratatui::DefaultTerminal) -> Result<()> {
-    loop {
-        if let Some(event) = check_events() {
-            match event {
-                EventType::Up => todo!(),
-                EventType::Down => todo!(),
-                EventType::Left => todo!(),
-                EventType::Right => todo!(),
-            }
-        }
-        term.draw(|frame| draw(frame))?;
-    }
-}
-fn draw(frame: &mut Frame) {}
-enum EventType {
-    Up,
-    Down,
-    Left,
-    Right,
-}
-fn check_events() -> Option<EventType> {
-    None
 }
